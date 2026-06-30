@@ -25,7 +25,7 @@
         canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
 
         .titulo-superior { position: absolute; top: 6%; width: 100%; text-align: center; z-index: 10; padding: 0 15px; pointer-events: none; }
-        .titulo-superior h2 { font-family: 'Caveat', cursive; color: #ff9ebb; font-size: 2.6rem; text-shadow: 0 0 10px rgba(255, 158, 187, 0.8); }
+        .titulo-superior h2 { font-family: 'Caveat', cursive; color: #ff9ebb; font-size: 2.3rem; text-shadow: 0 0 10px rgba(255, 158, 187, 0.8); }
         .titulo-superior p { color: #ffd4e2; font-size: 0.8rem; margin-top: 5px; letter-spacing: 1px; }
 
         .universo-centro { position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%); z-index: 5; text-align: center; pointer-events: none; }
@@ -61,7 +61,6 @@
         .galeria-fotos { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 15px; }
         .galeria-fotos img { width: 90px; height: 90px; object-fit: cover; border-radius: 12px; border: 2px solid #ff9ebb; }
 
-        /* REPRODUCTOR OCULTO */
         #contenedor-youtube { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
     </style>
 </head>
@@ -154,7 +153,7 @@
         desactivarBoton('closeMu', 'modalMusica');
         desactivarBoton('closeG', 'modalGaleria');
 
-        // INTEGRACIÓN DEL REPRODUCOR DE YOUTUBE
+        // INTEGRACIÓN DEL REPRODUCTOR DE YOUTUBE
         var player;
         var alternarMusica = false;
         var playBtn = document.getElementById('realPlayBtn');
@@ -163,7 +162,7 @@
             player = new YT.Player('player', {
                 height: '1',
                 width: '1',
-                videoId: '_4iQBPYWCcc', // ID de tu canción "Hasta la muerte"
+                videoId: '_4iQBPYWCcc', 
                 playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': '_4iQBPYWCcc' },
                 events: { 'onReady': onPlayerReady }
             });
@@ -185,7 +184,7 @@
             playBtn.ontouchstart = controlarReproduccion;
         }
 
-        // ANIMACIÓN DE ESTRELLAS Y TEXTO
+        // ANIMACIÓN DE ESTRELLAS Y TEXTO (Frases nuevas incluidas correctamente)
         var canvas = document.getElementById('universo');
         var ctx = canvas.getContext('2d');
         var estrellas = [];
@@ -200,7 +199,8 @@
             "✨ Me haces mejor persona", "Contigo quiero todo 💛", "Eres mi lugar seguro",
             "Tu risa mi felicidad 😍", "Eres mi universo 🌌", "Mi paz en este caos 🌸",
             "Gracias por existir ❤️", "Amor eterno 💖", "Eres arte 💫", "Mi cómplice",
-            "Contigo todo es mejor" "Eres solo mía", "Mi cachetona", "Mi princesita", "Mi mujer", "La madre de mis hijos", "Mi futura esposa", "La mujer que deseo ❤️‍🔥"
+            "Contigo todo es mejor", "Eres solo mía", "Mi cachetona", "Mi princesita", 
+            "Mi mujer", "La madre de mis hijos", "Mi futura esposa", "La mujer que deseo ❤️‍🔥"
         ];
 
         var contenedor = document.getElementById('contenedor-orbitas');
@@ -212,8 +212,8 @@
             div.className = 'texto-orbital'; div.innerHTML = frase;
             contenedor.appendChild(div);
             elementosFrases.push({
-                el: div, rx: rX + (index * 10), ry: (rX * 0.55) + (index * 5),
-                ang: (Math.PI * 2 / frases.length) * index, vel: 0.0025 + (Math.random() * 0.0015)
+                el: div, rx: rX + (index * 8), ry: (rX * 0.55) + (index * 4),
+                ang: (Math.PI * 2 / frases.length) * index, vel: 0.002 + (Math.random() * 0.001)
             });
         });
 
@@ -230,8 +230,8 @@
                 f.el.style.left = ((window.innerWidth / 2) + Math.cos(f.ang) * f.rx) + "px";
                 f.el.style.top = ((window.innerHeight * 0.48) + Math.sin(f.ang) * f.ry) + "px";
                 var fS = Math.sin(f.ang);
-                f.el.style.transform = "translate(-50%, -50%) scale(" + (0.75 + (fS + 1) * 0.15) + ")";
-                f.el.style.opacity = 0.4 + (fS + 1) * 0.6;
+                f.el.style.transform = "translate(-50%, -50%) scale(" + (0.7 + (fS + 1) * 0.15) + ")";
+                f.el.style.opacity = 0.3 + (fS + 1) * 0.7;
             });
             requestAnimationFrame(loop);
         }
