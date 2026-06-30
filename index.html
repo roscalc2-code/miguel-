@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nuestro Universo, Marilyn</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@400;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+        body, html {
+            width: 100%; height: 100%; overflow: hidden;
+            background: #0b0214;
+            font-family: 'Montserrat', sans-serif; color: #fff;
+            position: relative;
+        }
+
+        /* EFECTO NEBULOSA */
+        .nebulosa {
+            position: absolute; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(140, 40, 215, 0.2) 0%, rgba(255, 105, 180, 0.08) 50%, transparent 100%);
+            z-index: 1; pointer-events: none;
+        }
+
+        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+
+        /* TÍTULOS */
+        .titulo-superior { position: absolute; top: 6%; width: 100%; text-align: center; z-index: 10; padding: 0 15px; pointer-events: none; }
+        .titulo-superior h2 { font-family: 'Caveat', cursive; color: #ff9ebb; font-size: 2.6rem; text-shadow: 0 0 10px rgba(255, 158, 187, 0.8); }
+        .titulo-superior p { color: #ffd4e2; font-size: 0.8rem; margin-top: 5px; letter-spacing: 1px; }
+
+        /* CENTRO */
+        .universo-centro { position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%); z-index: 5; text-align: center; pointer-events: none; }
+        .corazon-brillante {
+            width: 130px; height: 130px;
+            background: radial-gradient(circle, #fff7e6 0%, #ff6a00 60%, rgba(255,0,0,0) 100%);
+            border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            box-shadow: 0 0 40px #ff6a00, 0 0 80px #ff2200;
+            animation: pulsar 2.5s ease-in-out infinite alternate;
+        }
+        .corazon-brillante h1 { font-family: 'Caveat', cursive; font-size: 2.4rem; color: #fff; }
+        .corazon-brillante p { font-size: 0.65rem; color: #ffebd3; }
+
+        @keyframes pulsar { 0% { transform: scale(0.94); } 100% { transform: scale(1.06); } }
+
+        /* LETRAS GIRATORIAS */
+        .texto-orbital { 
+            position: absolute; z-index: 4; font-size: 0.75rem; white-space: nowrap; color: #fff; 
+            transform: translate(-50%, -50%); pointer-events: none;
+            text-shadow: 0 0 6px #fff, 0 0 12px #ff9ebb;
+        }
+
+        /* BOTONES DE ABAJO */
+        .contenedor-botones { position: absolute; bottom: 8%; width: 100%; display: flex; justify-content: center; gap: 15px; padding: 0 25px; z-index: 999; }
+        .btn-inferior { 
+            background: rgba(255, 158, 187, 0.9); color: #0b0214; padding: 14px 20px; border-radius: 30px; 
+            font-size: 0.85rem; font-weight: 600; text-align: center; border: none; cursor: pointer; flex: 1; max-width: 150px;
+            box-shadow: 0 4px 15px rgba(255, 158, 187, 0.4);
+        }
+
+        /* VENTANAS MODALES */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 2, 15, 0.97); z-index: 9999; justify-content: center; align-items: center; padding: 20px; }
+        .modal-contenido { background: #150624; border: 2px solid #ff9ebb; border-radius: 20px; padding: 25px; width: 100%; max-width: 340px; text-align: center; }
+        .cerrar-modal { margin-top: 20px; padding: 10px 25px; background: #fff; color: #000; border: none; border-radius: 20px; font-weight: bold; }
+        
+        .galeria-fotos { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 15px; }
+        .galeria-fotos img { width: 85px; height: 85px; object-fit: cover; border-radius: 10px; border: 2px solid #ff9ebb; }
+    </style>
+</head>
+<body>
+
+    <audio id="miMusica" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
+    <div class="nebulosa"></div>
+    <canvas id="universo"></canvas>
+
+    <div class="titulo-superior">
+        <h2>✨ Nuestro Universo, Marilyn ✨</h2>
+        <p>Eres mi todo, mi hoy, mi siempre y mi eternidad.</p>
+    </div>
+
+    <div class="universo-centro">
+        <div class="corazon-brillante">
+            <h1>Marilyn</h1>
+            <p>Mi persona favorita ❤️</p>
+        </div>
+    </div>
+
+    <div id="contenedor-orbitas" style="position: absolute; width:100%; height:100%; top:0; left:0; pointer-events:none; z-index:3;"></div>
+
+    <div class="contenedor-botones">
+        <button class="btn-inferior" id="btnMensaje">📩 Mensajito</button>
+        <button class="btn-inferior" id="btnMusica">🎵 Música</button>
+        <button class="btn-inferior" id="btnGaleria">🖼️ Recuerdos</button>
+    </div>
+
+    <div id="modalMensaje" class="modal">
+        <div class="modal-contenido">
+            <h2 style="font-family: 'Caveat', cursive; color: #ff9ebb; font-size: 2.3rem;">Para ti...</h2>
+            <p style="margin-top: 15px; font-size: 0.95rem; line-height: 1.6;">No hay distancia que nos separe, ni tiempo que borre lo que siento por ti. Gracias por existir y por hacer mi vida tan hermosa.<br><br><span style="color:#ff6b8b; font-weight:600;">Te amo más de lo que las estrellas pueden contar. 💖</span></p>
+            <button class="cerrar-modal" id="closeM">Regresar</button>
+        </div>
+    </div>
+
+    <div id="modalMusica" class="modal">
+        <div class="modal-contenido">
+            <h2 style="font-family: 'Caveat', cursive; color: #ff9ebb; font-size: 2.2rem;">Reproductor</h2>
+            <p style="margin: 15px 0; font-size: 1rem;">Carla Morrison - Eres tú</p>
+            <button id="realPlayBtn" style="background:#ff6b8b; border:none; color:#fff; padding:12px 24px; border-radius:15px; font-size:1.1rem; font-weight:bold;">▶️ Iniciar Música</button>
+            <br>
+            <button class="cerrar-modal" id="closeMu">Regresar</button>
+        </div>
+    </div>
+
+    <div id="modalGaleria" class="modal">
+        <div class="modal-contenido">
+            <h2 style="font-family: 'Caveat', cursive; color: #ff9ebb; font-size: 2.2rem;">Nuestros Recuerdos</h2>
+            <div class="galeria-fotos">
+                <img src="C:\Users\Jau-Jau\Desktop\Galaxia_Sebas" alt="Foto 1">
+                <img src="C:\Users\Jau-Jau\Desktop\Galaxia_Sebas\foto2.jpeg" alt="Foto 2">
+                <img src="C:\Users\Jau-Jau\Desktop\Galaxia_Sebas\foto3.jpeg" alt="Foto 3">
+            </div>
+            <button class="cerrar-modal" id="closeG">Regresar</button>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN CLIC Y TOQUE DIRECTO PARA EVITAR BLOQUEOS EN CELULAR
+        function activarBoton(idBtn, idModal) {
+            var btn = document.getElementById(idBtn);
+            var md = document.getElementById(idModal);
+            btn.onclick = function() { md.style.display = 'flex'; };
+            btn.ontouchstart = function() { md.style.display = 'flex'; };
+        }
+        function desactivarBoton(idBtn, idModal) {
+            var btn = document.getElementById(idBtn);
+            var md = document.getElementById(idModal);
+            btn.onclick = function() { md.style.display = 'none'; };
+            btn.ontouchstart = function() { md.style.display = 'none'; };
+        }
+
+        Row = ["btnMensaje","modalMensaje","btnMusica","modalMusica","btnGaleria","modalGaleria"];
+        activarBoton('btnMensaje', 'modalMensaje');
+        activarBoton('btnMusica', 'modalMusica');
+        activarBoton('btnGaleria', 'modalGaleria');
+
+        desactivarBoton('closeM', 'modalMensaje');
+        desactivarBoton('closeMu', 'modalMusica');
+        desactivarBoton('closeG', 'modalGaleria');
+
+        // AUDIO
+        var audio = document.getElementById('miMusica');
+        var playBtn = document.getElementById('realPlayBtn');
+        function tocarMusica() {
+            if (audio.paused) { audio.play(); playBtn.innerText = "⏸️ Pausar"; } 
+            else { audio.pause(); playBtn.innerText = "▶️ Iniciar Música"; }
+        }
+        playBtn.onclick = tocarMusica;
+        playBtn.ontouchstart = tocarMusica;
+
+        // ESTRELLAS
+        var canvas = document.getElementById('universo');
+        var ctx = canvas.getContext('2d');
+        var estrellas = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resize(); window.onresize = resize;
+
+        for(var i=0; i<60; i++) {
+            estrellas.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, r: Math.random()*1.2, b: Math.random(), v: 0.008+Math.random()*0.01 });
+        }
+
+        var frases = [
+            "✨ Me haces mejor persona", "Contigo quiero todo 💛", "Eres mi lugar seguro",
+            "Tu risa mi felicidad 😍", "Eres mi universo 🌌", "Mi paz en este caos 🌸",
+            "Gracias por existir ❤️", "Amor eterno 💖", "Eres arte 💫", "Mi cómplice de vida",
+            "Contigo todo es mejor"
+        ];
+
+        var contenedor = document.getElementById('contenedor-orbitas');
+        var elementosFrases = [];
+        var rX = window.innerWidth * 0.35;
+
+        frases.forEach(function(frase, index) {
+            var div = document.createElement('div');
+            div.className = 'texto-orbital'; div.innerHTML = frase;
+            contenedor.appendChild(div);
+            elementosFrases.push({
+                el: div, rx: rX + (index * 10), ry: (rX * 0.55) + (index * 5),
+                ang: (Math.PI * 2 / frases.length) * index, vel: 0.0025 + (Math.random() * 0.0015)
+            });
+        });
+
+        function loop() {
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            estrellas.forEach(function(e) {
+                ctx.fillStyle = "rgba(255,230,245," + e.b + ")";
+                ctx.beginPath(); ctx.arc(e.x, e.y, e.r, 0, Math.PI*2); ctx.fill();
+                e.b += e.v; if(e.b > 1 || e.b < 0.1) e.v = -e.v;
+            });
+
+            elementosFrases.forEach(function(f) {
+                f.ang += f.vel;
+                f.el.style.left = ((window.innerWidth / 2) + Math.cos(f.ang) * f.rx) + "px";
+                f.el.style.top = ((window.innerHeight * 0.48) + Math.sin(f.ang) * f.ry) + "px";
+                var fS = Math.sin(f.ang);
+                f.el.style.transform = "translate(-50%, -50%) scale(" + (0.75 + (fS + 1) * 0.15) + ")";
+                f.el.style.opacity = 0.4 + (fS + 1) * 0.6;
+            });
+            requestAnimationFrame(loop);
+        }
+        loop();
+    </script>
+</body>
+</html>
