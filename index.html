@@ -64,13 +64,14 @@
         .modal-contenido { background: #150624; border: 2px solid #ff9ebb; border-radius: 20px; padding: 25px; width: 100%; max-width: 340px; text-align: center; }
         .cerrar-modal { margin-top: 20px; padding: 10px 25px; background: #fff; color: #000; border: none; border-radius: 20px; font-weight: bold; }
         
-        .galeria-fotos { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 15px; }
-        .galeria-fotos img { width: 85px; height: 85px; object-fit: cover; border-radius: 10px; border: 2px solid #ff9ebb; }
+        .galeria-fotos { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 15px; }
+        .galeria-fotos img { width: 90px; height: 90px; object-fit: cover; border-radius: 12px; border: 2px solid #ff9ebb; }
     </style>
 </head>
 <body>
 
-    <audio id="miMusica" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
+    <!-- Música Directa desde un servidor estable -->
+    <audio id="miMusica" src="https://pub-2023d538e1b64a27bc91b655cc2f1610.r2.dev/Eslabon_Armado_Ivan_Cornejo_Eres_Tu.mp3" loop></audio>
     <div class="nebulosa"></div>
     <canvas id="universo"></canvas>
 
@@ -94,6 +95,7 @@
         <button class="btn-inferior" id="btnGaleria">🖼️ Recuerdos</button>
     </div>
 
+    <!-- MODAL 1: MENSAJE -->
     <div id="modalMensaje" class="modal">
         <div class="modal-contenido">
             <h2 style="font-family: 'Caveat', cursive; color: #ff9ebb; font-size: 2.3rem;">Para ti...</h2>
@@ -102,30 +104,32 @@
         </div>
     </div>
 
+    <!-- MODAL 2: MÚSICA -->
     <div id="modalMusica" class="modal">
         <div class="modal-contenido">
             <h2 style="font-family: 'Caveat', cursive; color: #ff9ebb; font-size: 2.2rem;">Reproductor</h2>
-            <p style="margin: 15px 0; font-size: 1rem;">Carla Morrison - Eres tú</p>
-            <button id="realPlayBtn" style="background:#ff6b8b; border:none; color:#fff; padding:12px 24px; border-radius:15px; font-size:1.1rem; font-weight:bold;">▶️ Iniciar Música</button>
+            <p style="margin: 15px 0; font-size: 1rem; font-weight: 600; color: #ff9ebb;">Eres Tú</p>
+            <p style="margin-bottom: 15px; font-size: 0.85rem; color: #ffd4e2;">Eslabon Armado ft. Ivan Cornejo</p>
+            <button id="realPlayBtn" style="background:#ff6b8b; border:none; color:#fff; padding:12px 24px; border-radius:15px; font-size:1.1rem; font-weight:bold; width: 100%; cursor: pointer;">▶️ Iniciar Música</button>
             <br>
             <button class="cerrar-modal" id="closeMu">Regresar</button>
         </div>
     </div>
 
+    <!-- MODAL 3: GALERÍA -->
     <div id="modalGaleria" class="modal">
         <div class="modal-contenido">
             <h2 style="font-family: 'Caveat', cursive; color: #ff9ebb; font-size: 2.2rem;">Nuestros Recuerdos</h2>
             <div class="galeria-fotos">
-                <img src="C:\Users\Jau-Jau\Desktop\Galaxia_Sebas" alt="Foto 1">
-                <img src="C:\Users\Jau-Jau\Desktop\Galaxia_Sebas\foto2.jpeg" alt="Foto 2">
-                <img src="C:\Users\Jau-Jau\Desktop\Galaxia_Sebas\foto3.jpeg" alt="Foto 3">
+                <img src="https://i.ibb.co/84rvdS81/image.jpg" alt="Foto 1">
+                <img src="https://i.ibb.co/d4w8fgSN/image.jpg" alt="Foto 2">
+                <img src="https://i.ibb.co/mrYyKppT/image.jpg" alt="Foto 3">
             </div>
             <button class="cerrar-modal" id="closeG">Regresar</button>
         </div>
     </div>
 
     <script>
-        // CONFIGURACIÓN CLIC Y TOQUE DIRECTO PARA EVITAR BLOQUEOS EN CELULAR
         function activarBoton(idBtn, idModal) {
             var btn = document.getElementById(idBtn);
             var md = document.getElementById(idModal);
@@ -139,7 +143,6 @@
             btn.ontouchstart = function() { md.style.display = 'none'; };
         }
 
-        Row = ["btnMensaje","modalMensaje","btnMusica","modalMusica","btnGaleria","modalGaleria"];
         activarBoton('btnMensaje', 'modalMensaje');
         activarBoton('btnMusica', 'modalMusica');
         activarBoton('btnGaleria', 'modalGaleria');
